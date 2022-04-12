@@ -4,11 +4,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.nuls.v2</groupId>
+    <groupId>io.icw.v2</groupId>
     <artifactId>sdk4j-jdk8</artifactId>
     <version>1.1.17.RELEASE</version>
 
-    <name>nuls-sdk4j-jdk8</name>
+    <name>icw-sdk4j-jdk8</name>
 
     <parent>
         <groupId>org.sonatype.oss</groupId>
@@ -28,28 +28,18 @@
         <connection>https://github.com/nuls-io/nuls-v2-sdk4j.git</connection>
         <developerConnection>https://nuls.io</developerConnection>
     </scm>
-    <developers>
-        <developer>
-            <name>PierreLuo</name>
-            <email>luohao@nuls.io</email>
-            <organization>nuls-io</organization>
-        </developer>
-    </developers>
+
     <distributionManagement>
-        <snapshotRepository>
-            <!-- 这个id需要在setting.xml中设置  -->
-            <id>ossrh</id>
-            <name>OSS Snapshots Repository</name>
-            <!-- 这里的url就是Issue中回复的snapshots 的repo地址-->
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        </snapshotRepository>
         <repository>
-            <id>ossrh</id>
-            <name>OSS Staging Repository</name>
-            <!-- 这里的url就是Issue中回复的staging 的repo地址-->
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <id>maven-releases</id><!--这个ID需要与你的release仓库的Repository ID一致-->
+            <url>http://47.104.29.30:8082/repository/maven-releases/</url>
         </repository>
+        <snapshotRepository>
+            <id>maven-snapshots</id><!--这个ID需要与你的snapshots仓库的Repository ID一致-->
+            <url>http://47.104.29.30:8082/repository/maven-snapshots/</url>
+        </snapshotRepository>
     </distributionManagement>
+
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

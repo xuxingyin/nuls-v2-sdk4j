@@ -7,18 +7,22 @@
 此工程已上传到maven中央仓库，可在maven工程中使用：
 
 JDK11的版本依赖：
+
 ```xml
+
 <dependency>
-    <groupId>io.nuls.v2</groupId>
+    <groupId>io.icw.v2</groupId>
     <artifactId>sdk4j</artifactId>
     <version>1.0.6.RELEASE</version>
 </dependency>
 ```
 
 JDK8的版本依赖：
+
 ```xml
+
 <dependency>
-    <groupId>io.nuls.v2</groupId>
+    <groupId>io.icw.v2</groupId>
     <artifactId>sdk4j-jdk8</artifactId>
     <version>1.0.6.RELEASE</version>
 </dependency>
