@@ -71,7 +71,7 @@ public class LazyECPoint {
         if (bits != null) {
             return Arrays.copyOf(bits, bits.length);
         } else {
-            return get().getEncoded(true);
+            return get().getEncoded();
         }
     }
 
@@ -96,10 +96,11 @@ public class LazyECPoint {
     }
 
     public boolean isCompressed() {
-        if (bits == null) {
-            return false;
+        if (bits != null) {
+            return bits[0] == 2 || bits[0] == 3;
+        } else {
+            return get().isCompressed();
         }
-        return bits[0] == 2 || bits[0] == 3;
     }
 
     public ECPoint multiply(BigInteger k) {

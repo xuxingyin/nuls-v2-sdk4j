@@ -10,16 +10,17 @@ import io.icw.base.signture.P2PHKSignature;
 import io.icw.base.signture.SignatureUtil;
 import io.icw.core.basic.Result;
 import io.icw.core.constant.BaseConstant;
-import io.icw.core.constant.CommonCodeConstanst;
 import io.icw.core.constant.ErrorCode;
-import io.icw.core.crypto.*;
+import io.icw.core.crypto.AESEncrypt;
+import io.icw.core.crypto.Base58;
+import io.icw.core.crypto.ECKey;
+import io.icw.core.crypto.HexUtil;
 import io.icw.core.exception.CryptoException;
 import io.icw.core.exception.NulsException;
 import io.icw.core.exception.NulsRuntimeException;
 import io.icw.core.model.FormatValidUtils;
 import io.icw.core.model.StringUtils;
 import io.icw.v2.SDKContext;
-import io.icw.v2.enums.EncodeType;
 import io.icw.v2.error.AccountErrorCode;
 import io.icw.v2.model.Account;
 import io.icw.v2.model.dto.AccountDto;
@@ -29,10 +30,8 @@ import io.icw.v2.model.dto.SignDto;
 import io.icw.v2.util.AccountTool;
 import io.icw.v2.util.CommonValidator;
 import io.icw.v2.util.RestFulUtil;
-import io.icw.v2.util.TxUtils;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import static io.icw.v2.util.ValidateUtil.validateChainId;
@@ -832,22 +831,5 @@ public class AccountService {
         byte[] result = new byte[23];
         System.arraycopy(bytes, 0, result, 0, 23);
         return result;
-    }
-
-    public Result decryptData(String privateKey, String encryptMsg, EncodeType encodeType) {
-        try {
-            String _privateKey = TxUtils.cleanHexPrefix(privateKey);
-            String _encryptMsg = TxUtils.cleanHexPrefix(encryptMsg);
-            byte[] decrypt = ECIESUtil.decrypt(HexUtil.decode(_privateKey), _encryptMsg);
-            String result;
-            switch (encodeType) {
-                case HEX: result = HexUtil.encode(decrypt);break;
-                case UTF8: result = new String(decrypt, StandardCharsets.UTF_8);break;
-                default: return Result.getFailed(CommonCodeConstanst.PARAMETER_ERROR);
-            }
-            return Result.getSuccess(result);
-        } catch (Throwable e) {
-            return Result.getFailed(CommonCodeConstanst.DATA_ERROR).setMsg(e.getMessage());
-        }
     }
 }

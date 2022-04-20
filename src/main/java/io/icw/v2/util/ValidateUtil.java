@@ -3,7 +3,9 @@ package io.icw.v2.util;
 import io.icw.core.crypto.HexUtil;
 import io.icw.core.model.StringUtils;
 import io.icw.v2.SDKContext;
+import io.icw.v2.constant.AccountConstant;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,16 +43,15 @@ public class ValidateUtil {
      * @return
      */
     public static boolean validTxRemark(String remark) {
-        return true;
-        //if (StringUtils.isBlank(remark)) {
-        //    return true;
-        //}
-        //try {
-        //    byte[] bytes = remark.getBytes(SDKContext.DEFAULT_ENCODING);
-        //    return bytes.length <= AccountConstant.TX_REMARK_MAX_LEN;
-        //} catch (UnsupportedEncodingException e) {
-        //    return false;
-        //}
+        if (StringUtils.isBlank(remark)) {
+            return true;
+        }
+        try {
+            byte[] bytes = remark.getBytes(SDKContext.DEFAULT_ENCODING);
+            return bytes.length <= AccountConstant.TX_REMARK_MAX_LEN;
+        } catch (UnsupportedEncodingException e) {
+            return false;
+        }
     }
 
     public static boolean validateNonce(String nonce) {

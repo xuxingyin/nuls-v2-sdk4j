@@ -9,7 +9,6 @@ import io.icw.core.crypto.HexUtil;
 import io.icw.core.exception.NulsException;
 import io.icw.core.rpc.model.*;
 import io.icw.v2.SDKContext;
-import io.icw.v2.enums.EncodeType;
 import io.icw.v2.model.annotation.ApiOperation;
 import io.icw.v2.model.dto.*;
 import io.icw.v2.service.*;
@@ -319,18 +318,6 @@ public class NulsSDKTool {
     }))
     public static Result changeV1addressToV2address(String v1Address) {
         return accountService.changeV1addressToV2address(v1Address);
-    }
-    @ApiOperation(description = "消息解密", order = 161)
-    @Parameters(value = {
-            @Parameter(parameterName = "privateKey", parameterDes = "私钥"),
-            @Parameter(parameterName = "encryptMsg", parameterDes = "加密消息"),
-            @Parameter(parameterName = "encodeType", parameterDes = "解密消息的编码方式: HEX, UTF8"),
-    })
-    @ResponseData(name = "返回值", responseType = @TypeDescriptor(value = Map.class, mapKeys = {
-            @Key(name = "value", description = "解密消息")
-    }))
-    public static Result decryptData(String privateKey, String encryptMsg, EncodeType encodeType) {
-        return accountService.decryptData(privateKey, encryptMsg, encodeType);
     }
 
     @ApiOperation(description = "根据区块高度查询区块头", order = 201)
@@ -1002,15 +989,14 @@ public class NulsSDKTool {
             @Parameter(parameterName = "senderBalance", requestType = @TypeDescriptor(value = BigInteger.class), parameterDes = "账户余额"),
             @Parameter(parameterName = "nonce", parameterDes = "账户nonce值"),
             @Parameter(parameterName = "value", requestType = @TypeDescriptor(value = BigInteger.class), parameterDes = "调用者向合约地址转入的主网资产金额，没有此业务时填BigInteger.ZERO"),
+            @Parameter(parameterName = "multyAssetValues", requestType = @TypeDescriptor(value = String[][].class), parameterDes = "调用者向合约地址转入的其他资产金额，没有此业务时填空，规则: [[<value>,<assetChainId>,<assetId>]]"),
             @Parameter(parameterName = "contractAddress", parameterDes = "合约地址"),
             @Parameter(parameterName = "gasLimit", requestType = @TypeDescriptor(value = long.class), parameterDes = "设置合约执行消耗的gas上限"),
             @Parameter(parameterName = "methodName", parameterDes = "合约方法"),
             @Parameter(parameterName = "methodDesc", parameterDes = "合约方法描述，若合约内方法没有重载，则此参数可以为空", canNull = true),
             @Parameter(parameterName = "args", requestType = @TypeDescriptor(value = Object[].class), parameterDes = "参数列表", canNull = true),
             @Parameter(parameterName = "argsType", requestType = @TypeDescriptor(value = String[].class), parameterDes = "参数类型列表", canNull = true),
-            @Parameter(parameterName = "remark", parameterDes = "交易备注", canNull = true),
-            @Parameter(parameterName = "multyAssetValues", requestType = @TypeDescriptor(value = String[][].class), parameterDes = "调用者向合约地址转入的其他资产金额，没有此业务时填空，规则: [[<value>,<assetChainId>,<assetId>]]"),
-            @Parameter(parameterName = "nulsValueToOthers", requestType = @TypeDescriptor(value = String[][].class), parameterDes = "调用者向其他账户地址转入的NULS资产金额，没有此业务时填空，规则: [[<value>,<address>]]")
+            @Parameter(parameterName = "remark", parameterDes = "交易备注", canNull = true)
     })
     @ResponseData(name = "返回值", description = "返回一个Map", responseType = @TypeDescriptor(value = Map.class, mapKeys = {
             @Key(name = "hash", description = "交易hash"),
@@ -1018,21 +1004,15 @@ public class NulsSDKTool {
     }))
     public static Result<Map> callContractTxOffline(String sender, BigInteger senderBalance, String nonce, BigInteger value, String contractAddress, long gasLimit,
                                                     String methodName, String methodDesc, Object[] args, String[] argsType, String remark,
-                                                    List<ProgramMultyAssetValue> multyAssetValues, List<AccountAmountDto> nulsValueToOthers) {
-        return contractService.callContractTxOffline(sender, senderBalance, nonce, value, contractAddress, gasLimit, methodName, methodDesc,
-                args, argsType, System.currentTimeMillis() / 1000, remark, multyAssetValues, nulsValueToOthers);
-    }
-    public static Result<Map> callContractTxOffline(String sender, BigInteger senderBalance, String nonce, BigInteger value, String contractAddress, long gasLimit,
-                                                    String methodName, String methodDesc, Object[] args, String[] argsType, String remark,
                                                     List<ProgramMultyAssetValue> multyAssetValues) {
         return contractService.callContractTxOffline(sender, senderBalance, nonce, value, contractAddress, gasLimit, methodName, methodDesc,
-                args, argsType, System.currentTimeMillis() / 1000, remark, multyAssetValues, null);
+                args, argsType, System.currentTimeMillis() / 1000, remark, multyAssetValues);
     }
 
     public static Result<Map> callContractTxOffline(String sender, BigInteger senderBalance, String nonce, BigInteger value, String contractAddress, long gasLimit,
                                                     String methodName, String methodDesc, Object[] args, String[] argsType, String remark) {
         return contractService.callContractTxOffline(sender, senderBalance, nonce, value, contractAddress, gasLimit, methodName, methodDesc,
-                args, argsType, System.currentTimeMillis() / 1000, remark, null, null);
+                args, argsType, System.currentTimeMillis() / 1000, remark, null);
     }
 
     @ApiOperation(description = "离线组装 - 删除合约的交易", order = 453)
