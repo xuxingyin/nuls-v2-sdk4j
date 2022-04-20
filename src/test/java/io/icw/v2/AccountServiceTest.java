@@ -5,7 +5,7 @@ import io.icw.core.basic.Result;
 import io.icw.core.crypto.ECIESUtil;
 import io.icw.core.crypto.HexUtil;
 import io.icw.core.parse.JSONUtils;
-import io.icw.v2.enums.EncodeType;
+//import io.icw.v2.enums.EncodeType;
 import io.icw.v2.model.dto.*;
 import io.icw.v2.util.NulsSDKTool;
 import org.junit.Before;
@@ -198,20 +198,20 @@ public class AccountServiceTest {
         Result result = NulsSDKTool.changeV1addressToV2address(address);
         System.out.println(result);
     }
-
-    @Test
-    public void encrypAndDecryptMsgTest() throws Exception {
-        String pri = "9ce21dad67e0f0af2599b41b515a7f7018059418bab892a7b68f283d489abc4b";
-        String pub = "03958b790c331954ed367d37bac901de5c2f06ac8368b37d7bd6cd5ae143c1d7e3";
-        String msg = "werwerwerwe新光天地，没有#$%^&*()cvbcvbcvb";
-        byte[] encrypt = ECIESUtil.encrypt(HexUtil.decode(pub), msg.getBytes(StandardCharsets.UTF_8));
-        String encryptMsg = HexUtil.encode(encrypt);
-        Result result = NulsSDKTool.decryptData(pri, encryptMsg, EncodeType.UTF8);
-        System.out.println(result.isSuccess());
-        System.out.println(result.getData());
-        System.out.println(result.getErrorCode().getCode());
-        System.out.println(result.getMsg());
-
-    }
+//
+//    @Test
+//    public void encrypAndDecryptMsgTest() throws Exception {
+//        String pri = "9ce21dad67e0f0af2599b41b515a7f7018059418bab892a7b68f283d489abc4b";
+//        String pub = "03958b790c331954ed367d37bac901de5c2f06ac8368b37d7bd6cd5ae143c1d7e3";
+//        String msg = "werwerwerwe新光天地，没有#$%^&*()cvbcvbcvb";
+//        byte[] encrypt = ECIESUtil.encrypt(HexUtil.decode(pub), msg.getBytes(StandardCharsets.UTF_8));
+//        String encryptMsg = HexUtil.encode(encrypt);
+//        Result result = NulsSDKTool.decryptData(pri, encryptMsg, EncodeType.UTF8);
+//        System.out.println(result.isSuccess());
+//        System.out.println(result.getData());
+//        System.out.println(result.getErrorCode().getCode());
+//        System.out.println(result.getMsg());
+//
+//    }
 
 }
